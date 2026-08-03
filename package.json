@@ -1,0 +1,17 @@
+{
+  "name": "mdtoapa",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "type": "commonjs",
+  "dependencies": {
+    "js-yaml": "^5.2.3",
+    "katex": "^0.17.0",
+    "marked": "^18.0.7",
+    "marked-katex-extension": "^5.1.10"
+  }
+}

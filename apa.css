@@ -1,0 +1,175 @@
+/* ==========================================
+   1. PAGE MARGINS & PAGINATION (PRINT / PDF)
+   ========================================== */
+
+/* Base settings for all pages: Page number top-right */
+@page {
+  size: letter;
+  margin: 1in;
+  @top-right {
+    content: counter(page);
+    font-family: "Times New Roman", Times, serif;
+    font-size: 12pt;
+  }
+}
+
+/* Suppress the page number on the FIRST page specifically */
+@page :first {
+  @top-right {
+    content: "";
+  }
+}
+
+/* ==========================================
+   2. BODY & BASE TYPOGRAPHY
+   ========================================== */
+body {
+  font-family: "Times New Roman", Times, serif;
+  font-size: 12pt;
+  line-height: 2; /* Double spacing throughout */
+  color: #000;
+  max-width: 6.5in; /* 8.5in paper width - 2in margins */
+  margin: 0 auto;
+  padding: 1in 0;
+  background-color: #fff;
+}
+
+/* ==========================================
+   3. TWO-COLUMN LAYOUT CONTAINER
+   ========================================== */
+/* Apply two columns to main body content */
+main > h1:first-child {
+    break-before: auto;
+}
+
+/* Force Level 1 headings (e.g. # Method, # References) to span across both columns */
+h1 {
+  column-span: all;
+  text-align: center;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+
+  break-before: page;
+}
+
+/* Screen-only page counter simulation */
+.page-number {
+  text-align: right;
+  font-size: 12pt;
+  margin-bottom: 2rem;
+}
+
+/* Hide screen simulation page counter inside the title page container */
+.apa-title-page .page-number {
+  display: none;
+}
+
+/* ==========================================
+   4. TITLE PAGE LAYOUT (ALWAYS SINGLE COLUMN)
+   ========================================== */
+.apa-title-page {
+  text-align: center;
+  margin-top: 2.5in;
+  margin-bottom: 3in;
+  page-break-after: always;
+  break-after: page;
+  /* Title page strictly stays single column */
+  column-span: all;
+}
+
+.apa-title-page h1 {
+  font-size: 12pt;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+}
+
+.apa-meta {
+  font-weight: normal;
+  margin: 0;
+  line-height: 2;
+}
+
+/* ==========================================
+   5. PARAGRAPHS & INDENTS
+   ========================================== */
+p {
+  text-indent: 0.5in;
+  margin: 0;
+  padding: 0;
+}
+
+.apa-title-page p,
+.no-indent {
+  text-indent: 0;
+}
+
+/* ==========================================
+   6. APA 7th HEADING HIERARCHY
+   ========================================== */
+h1, h2, h3, h4, h5 {
+  font-size: 12pt;
+  font-weight: bold;
+  margin: 0;
+  padding: 0;
+  line-height: 2;
+}
+
+/* Level 2: Flush Left, Bold, Title Case */
+h2 {
+  text-align: left;
+}
+
+/* Level 3: Flush Left, Bold Italic, Title Case */
+h3 {
+  text-align: left;
+  font-style: italic;
+}
+
+/* Level 4: Indented, Bold, Title Case (In-line) */
+h4 {
+  display: inline;
+  text-indent: 0.5in;
+  padding-right: 0.5em;
+}
+
+/* Level 5: Indented, Bold Italic, Title Case (In-line) */
+h5 {
+  display: inline;
+  text-indent: 0.5in;
+  font-style: italic;
+  padding-right: 0.5em;
+}
+
+/* ==========================================
+   7. BLOCKQUOTES & REFERENCES
+   ========================================== */
+blockquote {
+  margin: 0 0 0 0.5in;
+  text-indent: 0;
+  line-height: 2;
+}
+
+/* References Section: Hanging Indent inside columns */
+.apa-references p,
+.apa-references li {
+  text-indent: -0.25in; /* Adjusted slightly smaller for narrower columns */
+  padding-left: 0.25in;
+  margin-bottom: 0;
+  break-inside: avoid;  /* Prevents a single citation from splitting across columns */
+}
+
+/* ==========================================
+   8. LATEX & MATH FORMATTING
+   ========================================== */
+.katex-display {
+  text-align: center;
+  margin: 1rem 0 !important;
+  text-indent: 0 !important;
+  max-width: 100%;
+  overflow-x: auto; /* Handles wide equations safely inside columns */
+}
+
+.katex {
+  font-size: 1em;
+  text-indent: 0;
+}
