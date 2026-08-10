@@ -6,4 +6,3 @@
 - cli 
   - input file
   - output file
-  - watermark
