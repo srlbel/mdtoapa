@@ -6,6 +6,7 @@
 @page {
   size: letter;
   margin: 1in;
+
   @top-right {
     content: counter(page);
     font-family: "Times New Roman", Times, serif;
@@ -26,9 +27,11 @@
 body {
   font-family: "Times New Roman", Times, serif;
   font-size: 12pt;
-  line-height: 2; /* Double spacing throughout */
+  line-height: 2;
+  /* Double spacing throughout */
   color: #000;
-  max-width: 6.5in; /* 8.5in paper width - 2in margins */
+  max-width: 6.5in;
+  /* 8.5in paper width - 2in margins */
   margin: 0 auto;
   padding: 1in 0;
   background-color: #fff;
@@ -38,8 +41,8 @@ body {
    3. TWO-COLUMN LAYOUT CONTAINER
    ========================================== */
 /* Apply two columns to main body content */
-main > h1:first-child {
-    break-before: auto;
+main>h1:first-child {
+  break-before: auto;
 }
 
 /* Force Level 1 headings (e.g. # Method, # References) to span across both columns */
@@ -106,7 +109,11 @@ p {
 /* ==========================================
    6. APA 7th HEADING HIERARCHY
    ========================================== */
-h1, h2, h3, h4, h5 {
+h1,
+h2,
+h3,
+h4,
+h5 {
   font-size: 12pt;
   font-weight: bold;
   margin: 0;
@@ -152,10 +159,12 @@ blockquote {
 /* References Section: Hanging Indent inside columns */
 .apa-references p,
 .apa-references li {
-  text-indent: -0.25in; /* Adjusted slightly smaller for narrower columns */
+  text-indent: -0.25in;
+  /* Adjusted slightly smaller for narrower columns */
   padding-left: 0.25in;
   margin-bottom: 0;
-  break-inside: avoid;  /* Prevents a single citation from splitting across columns */
+  break-inside: avoid;
+  /* Prevents a single citation from splitting across columns */
 }
 
 /* ==========================================
@@ -166,10 +175,70 @@ blockquote {
   margin: 1rem 0 !important;
   text-indent: 0 !important;
   max-width: 100%;
-  overflow-x: auto; /* Handles wide equations safely inside columns */
+  overflow-x: auto;
+  /* Handles wide equations safely inside columns */
 }
 
 .katex {
   font-size: 1em;
   text-indent: 0;
+}
+
+/* ==========================================
+   9. TABLES
+   ========================================== */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  /* single shared border between cells */
+  border: 1px solid #000;
+  margin: 1rem 0;
+  text-indent: 0;
+  break-inside: auto;
+  /* long tables may split across pages */
+}
+
+th,
+td {
+  border: 1px solid #000;
+  padding: 0.25rem 0.5rem;
+  vertical-align: top;
+  text-align: left;
+  line-height: 1.5;
+  /* tighter than the body's 2 so rows stay compact */
+  text-indent: 0;
+  /* cancels the 0.5in paragraph indent inside cells */
+}
+
+th {
+  font-weight: bold;
+  text-align: center;
+}
+
+td p,
+th p {
+  text-indent: 0;
+  /* in case the Markdown renderer wraps cell text in <p> */
+}
+
+/* Keep rows intact and repeat the header on each printed page */
+tr {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+thead {
+  display: table-header-group;
+}
+
+/* Make sure borders show up when printing / saving to PDF */
+@media print {
+
+  table,
+  th,
+  td {
+    border: 1px solid #000 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
 }
