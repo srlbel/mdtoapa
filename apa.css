@@ -242,3 +242,19 @@ thead {
     print-color-adjust: exact;
   }
 }
+
+/* Image and figure support */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+figure {
+  margin: 1.5em 0;
+  text-align: center;
+}
+
+figcaption {
+  font-style: italic;
+  margin-top: 0.5em;
+}
