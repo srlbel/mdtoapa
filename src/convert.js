@@ -1,7 +1,7 @@
 const fs = require("node:fs");
 const { Marked } = require("marked");
 const markedKatex = require("marked-katex-extension");
-const apaCss = require("./styles/apa");
+const apaCss = require("./styles/apa.js");
 
 const { parseFrontMatter } = require("./frontMatter");
 const { imageRenderer } = require("./renderers/image");
@@ -25,12 +25,13 @@ function wrapReferences(html) {
 }
 
 /**
- * @param {string}  mdString      markdown source (with optional YAML front matter)
- * @param {string}  cssPath       CSS file to inline
- * @param {string}  [baseDir]     directory used to resolve relative image paths
- * @param {boolean} [embedImages] inline local images as base64
+ * @param {string}  mdString               markdown source (with optional YAML front matter)
+ * @param {object}  [options]
+ * @param {string}  [options.css]          CSS string to inline (defaults to the APA styles)
+ * @param {string}  [options.baseDir]      directory used to resolve relative image paths
+ * @param {boolean} [options.embedImages]  inline local images as base64
  */
-function convertMdToHtml(mdString, css = apaCss, baseDir = ".", embedImages = true) {
+function convertMdToHtml(mdString, { css = apaCss, baseDir = ".", embedImages = true } = {}) {
     const md = createMarked(baseDir, embedImages);
     const { metadata, content } = parseFrontMatter(mdString);
 
@@ -39,7 +40,7 @@ function convertMdToHtml(mdString, css = apaCss, baseDir = ".", embedImages = tr
 
     return htmlDocument({
         title: metadata.title,
-        css: css,
+        css,
         titlePageHtml: titlePage(metadata),
         body,
     });
