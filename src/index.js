@@ -1,6 +1,6 @@
 const fs = require("node:fs");
 const path = require("node:path");
-const { Marked } = require("marked");
+const { Marked, Renderer } = require("marked");
 const markedKatex = require("marked-katex-extension");
 const yaml = require("js-yaml");
 
@@ -57,6 +57,17 @@ function imageRenderer(baseDir, embed) {
   };
 }
 
+function tableRenderer() {
+  return {
+    table(token) {
+      const html = Renderer.prototype.table.call(this, token);
+      if (!token.caption) return html;
+
+      return `<figure class="table-figure">${html}<figcaption class="table-caption"><strong>Tabla ${token.tableNumber}.</strong> ${token.caption}</figcaption></figure>`;
+    }
+  }
+}
+
 /**
  * @param {string} mdString   markdown source (with optional YAML front matter)
  * @param {string} cssPath    path to the CSS file to inline
@@ -69,7 +80,7 @@ function convertMdToHtml(mdString, cssPath, baseDir = ".", embedImages = true) {
       throwOnError: false,
       output: "html",
     }),
-    { renderer: imageRenderer(baseDir, embedImages) },
+    { renderer: { ...imageRenderer(baseDir, embedImages), ...tableRenderer() } },
   );
 
   let metadata = {};
@@ -83,7 +94,28 @@ function convertMdToHtml(mdString, cssPath, baseDir = ".", embedImages = true) {
     }
   }
 
-  let parsedBody = md.parse(content);
+  const tokens = md.lexer(content);
+  let tableCount = 0;
+
+  for (let i = 0; i < tokens.length; i++) {
+    if (tokens[i].type !== "table") continue;
+
+    tableCount++;
+    tokens[i].tableNumber = tableCount;
+
+    // find the next non-blank token
+    let j = i + 1;
+    while (tokens[j] && tokens[j].type === "space") j++;
+    const next = tokens[j];
+
+    if (next && next.type === "paragraph" && /^Tabla:\s*/i.test(next.text)) {
+      const captionText = next.text.replace(/^Tabla:\s*/i, "");
+      tokens[i].caption = md.parseInline(captionText); // supports *italics*, math, etc.
+      tokens.splice(i + 1, j - i); // remove blanks + the caption paragraph
+    }
+  }
+
+  let parsedBody = md.parser(tokens, md.defaults);
 
   parsedBody = parsedBody.replace(
     /<h1>References<\/h1>([\s\S]*)/i,

@@ -258,3 +258,13 @@ figcaption {
   font-style: italic;
   margin-top: 0.5em;
 }
+
+.table-figure {
+  margin: 1.5em 0;
+}
+
+.table-caption {
+  margin-top: 0.5em;
+  font-size: 0.9em;
+  text-align: left;
+}
