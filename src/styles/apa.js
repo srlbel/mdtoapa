@@ -1,3 +1,4 @@
+module.exports = String.raw`
 /* ==========================================
    1. PAGE MARGINS & PAGINATION (PRINT / PDF)
    ========================================== */
@@ -268,3 +269,4 @@ figcaption {
   font-size: 0.9em;
   text-align: left;
 }
+`

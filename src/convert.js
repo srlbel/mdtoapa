@@ -1,6 +1,7 @@
 const fs = require("node:fs");
 const { Marked } = require("marked");
 const markedKatex = require("marked-katex-extension");
+const apaCss = require("./styles/apa");
 
 const { parseFrontMatter } = require("./frontMatter");
 const { imageRenderer } = require("./renderers/image");
@@ -29,7 +30,7 @@ function wrapReferences(html) {
  * @param {string}  [baseDir]     directory used to resolve relative image paths
  * @param {boolean} [embedImages] inline local images as base64
  */
-function convertMdToHtml(mdString, cssPath, baseDir = ".", embedImages = true) {
+function convertMdToHtml(mdString, css = apaCss, baseDir = ".", embedImages = true) {
     const md = createMarked(baseDir, embedImages);
     const { metadata, content } = parseFrontMatter(mdString);
 
@@ -38,7 +39,7 @@ function convertMdToHtml(mdString, cssPath, baseDir = ".", embedImages = true) {
 
     return htmlDocument({
         title: metadata.title,
-        css: fs.readFileSync(cssPath, "utf-8"),
+        css: css,
         titlePageHtml: titlePage(metadata),
         body,
     });
